@@ -19,20 +19,33 @@ router.post("/login",async(req,res)=>{
     const {email,password} = req.body;
     try {
         const user = await Userss.findOne({email:email, password:password});
+        console.log(user)
         if(user){
             const nopassd = {
                 name: user.name,
                 isAdmin: user.isAdmin,
-                email: user.email
+                email: user.email,
+                userid: user._id
             }
             res.send(nopassd)
         }else{
             return res.status(400).json({message: "login failed" })
         }
-        res.send(" ")
+        //res.send(" ")
+        
     } catch (error) {
-        return res.status(400).json({error })
+        return res.status(400).json({error})
+        
     }
 
+});
+router.get('/allusers', async(req, res) => {
+    try {
+        const allusers = await Userss.find({})
+         res.send(allusers)
+    } catch (error) {
+        return res.status(400).json({message: error})
+    }
+    
 });
 module.exports = router;
